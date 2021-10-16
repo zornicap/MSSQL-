@@ -1,0 +1,46 @@
+CREATE TABLE Sizes (
+Id INT PRIMARY KEY IDENTITY,
+[Length] INT NOT NULL ,
+Check ([Length] Between 10 and 25),
+RingRange Decimal(18,2) NOT NULL,
+Check (RingRange Between 1.5 and 7.5)
+)
+CREATE TABLE Tastes (
+Id INT PRIMARY KEY IDENTITY,
+TasteType varchar(20) NOT NULL,
+TasteStrength varchar(15) NOT NULL,
+ImageURL nvarchar(100) NOT NULL
+)
+CREATE TABLE Brands (
+Id INT PRIMARY KEY IDENTITY,
+BrandName varchar(30) UNIQUE NOT NULL,
+BrandDescription varchar(MAX)
+)
+CREATE TABLE Cigars (
+Id INT PRIMARY KEY IDENTITY,
+CigarName varchar(80) NOT NULL,
+BrandId INT FOREIGN KEY REFERENCES Brands(Id) NOT NULL,
+TastId INT FOREIGN KEY REFERENCES Tastes(Id) NOT NULL,
+SizeId INT FOREIGN KEY REFERENCES Sizes(Id) NOT NULL,
+PriceForSingleCigar DECIMAL(18,2) NOT NULL,
+ImageURL nvarchar(100) NOT NULL
+)
+CREATE TABLE Addresses (
+Id INT PRIMARY KEY IDENTITY,
+Town varchar(30) NOT NULL,
+Country nvarchar(30) NOT NULL,
+Streat nvarchar(100) NOT NULL,
+ZIP varchar(20) NOT NULL
+)
+CREATE TABLE Clients (
+Id INT PRIMARY KEY IDENTITY,
+FirstName nvarchar(30) NOT NULL,
+LastName nvarchar(30) NOT NULL,
+Email nvarchar(50) NOT NULL,
+AddressId INT FOREIGN KEY REFERENCES Addresses(Id) NOT NULL
+)
+CREATE TABLE ClientsCigars (
+ClientId INT FOREIGN KEY REFERENCES Clients(Id) NOT NULL,
+CigarId INT FOREIGN KEY REFERENCES Cigars(Id) NOT NULL,
+PRIMARY KEY(ClientId, CigarId)
+)
